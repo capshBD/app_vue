@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>VUE 开始</title>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="按钮">
+
+    </div>
+    <script id="tmp" type="text/x-wangxiaozhang">
+        <div>
+            <p>%word%</p>
+        </div>
+    </script>
+    <script type="text/javascript">
+        // 1. 直接操作DOM
+        // function changeDirectly(){
+        //     var app = document.getElementById('app');
+
+        //     var div, p;
+        //     div = document.createElement('div');
+        //     p = document.createElement('p');
+
+        //     p.innerHTML = 'abc';
+        //     div.appendChild(p);
+        //     app.appendChild(div);
+        // }
+
+        // addEventListener('click', changeDirectly);
+
+        // 2. 模板方法
+        // function changeDirectly(){
+        //     var app = document.getElementById('app');
+        //     var html = '';
+
+        //     var htmlTmp = '<div><p>%word%</p></div>';
+            
+        //     html = htmlTmp.replace(/%word%/g, 'abc');
+        //     console.log(html);
+            
+        //     app.innerHTML = html;
+        // }
+
+        // addEventListener('click', changeDirectly);
+
+        // 3. JS与HTML分离
+        //    第一步：把模板放到HTML中
+        //    第二步：渲染
+        //    第三步：模板hide起来
+
+        function changeDirectly(){
+            var app = document.getElementById('app');
+            var html = '';
+
+            var htmlTmp = document.getElementById('tmp').innerHTML;
+            
+            html = htmlTmp.replace(/%word%/g, 'abc');
+            console.log(html);
+            
+            app.innerHTML = html;
+        }
+
+        addEventListener('click', changeDirectly);
+
+    </script>
+</body>
+</html>

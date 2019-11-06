@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../../../static/vue/common/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="显示" @click="show">
+        <p v-if="showP">能够被控制显示还是不显示的p标签</p>
+        <p>{{text}}</p>
+    </div>
+    <script type="text/javascript">
+        var m = {
+            showP: false,
+            text :'我的第一次vue'
+        };
+
+        var vm = new Vue({
+            el: '#app',
+            data: m,
+            methods: {
+                show: function(){//这个vue实例添加show方法
+                	//console.info(this);//this指的是Vue的这个实例 Vue直接继承Object
+                    this.showP = !this.showP;
+                }
+            }
+        });
+        /*Vue用Model数据实例化对象并添加一些方法后 开始替换app下面的视图变量 {{}}表示的换成Model层 的相应变量  @click表示的绑定此对象的某个方法
+        v-if表示的用boolean值判断若是false就将它隐藏 可以调用事件方法改变v-if 的值 来进行显示
+        */
+    </script>
+</body>
+</html>
