@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 事件</title>
+    <script src="/vue/common/vue.js"></script>
+</head>
+<body>
+<!--
+ 默认在一个标签元素上绑定一个事件,其下面的任意一个元素触发该类型的事件的话,会冒泡到他上层的所有元素触发响应事件,依次从下往上调用其事件处理函数
+ 若在某个元素的相应事件上添加.stop属性,则此种事件在此终结,不会再传递到上层
+
+ .prevent属性 阻止原事件的默认行为
+ .enter,.13,.left或其他 某种事件的进一步事件触发条件限制 如keyup键盘弹起事件 加上.enter 再限制一下必须是回车键才行
+-->
+<div id="p1">
+    <div id="ch1" @click="bubbleTop($event)">
+        <div id="ch11" @click.stop="bubbleParent($event)">
+            <button>按钮1</button>
+            <button>按钮2</button>
+            <button>按钮3</button>
+        </div>
+
+    </div>
+    <a href="http://www.baidu.com" @click.prevent="preventFunc">百度</a><br>
+    <input type="text" @keyup="keyupFunc" v-model="textValue"/><br>
+    <input type="text" @keyup.enter="keyupFunc2" v-model="textValue2"/>
+</div>
+<script type="text/javascript">
+    var data={
+        textValue:'',
+        textValue2:'默认值',
+    };
+    var vue=new Vue({
+        el:'#p1',
+        data:data,
+        methods:{
+            bubbleParent: function (event) {
+                console.info("bubble1......")
+                console.info(event.target);
+            },
+            bubbleTop: function (event) {
+                console.info("bubble2......")
+                console.info(event.target);
+            },
+            preventFunc:function () {
+                console.info("阻止了事件的默认行为");
+            },
+            keyupFunc:function () {
+                console.info(this.textValue);
+            },
+            keyupFunc2:function () {
+                console.info(this.textValue2);
+            }
+        }
+    })
+</script>
+</body>
+</html>

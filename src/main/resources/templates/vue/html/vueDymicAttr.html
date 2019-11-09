@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态设置属性</title>
+    <script src="/vue/common/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--vue对象内部实现字符串翻转-->
+    <input type="text" v-model="m1">
+    <!--第一种方式  {{msg()}} 调用vue对象的msg方法获取返回值 设置这个值-->
+    <!--第二种方式 调用配置的computed属性里面的msg方法获取返回值 设置这个值 但是不用写() 推荐-->
+    {{msg}}
+</div>
+<script>
+    var m = {
+        m1: 'hello world!'
+    };
+
+     new Vue({
+        el: '#app',
+        data: m,
+        methods: {
+            //若methods中的方法和computed中的方法同名 则引用methods中的
+             /*msg: function(){
+                return this.m1.split('').reverse().join('');
+            }*/
+        },
+        computed: {
+            //m1的值若改变 则msg方法会被调用
+            msg: function(){
+                return this.m1.split('').reverse().join('');
+            }
+        }
+    });
+</script>
+</body>
+</html>

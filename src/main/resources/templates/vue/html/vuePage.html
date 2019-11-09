@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 分页例子</title>
+    <script src="/vue/common/vue.js"></script>
+    <style>
+        a{text-decoration:none}
+        .active {
+            color: red;
+        }
+
+        .page {
+            list-style: none;
+        }
+
+        .page>li {
+            float: left;
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            background: #eee;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <ul class="page">
+        <li>
+            <a href="#" @click="first">首页</a>
+        </li>
+        <li>
+            <a href="#" @click="prev">上一页</a>
+        </li>
+        <li v-for="n in pageCount">
+            <a href="#" :class="activeNumber==n?'active':''" @click="activeThis(n)">{{n}}</a>
+        </li>
+        <li>
+            <a href="#" @click="next">下一页</a>
+        </li>
+        <li>
+            <a href="#" @click="last">末页</a>
+        </li>
+    </ul>
+</div>
+    <script type="text/javascript">
+        var data={
+            pageCount:10,
+            activeNumber:5
+        };
+
+        new Vue({
+            el:'#app',
+            data:data,
+            methods:{
+                prev:function(){
+                   if(this.activeNumber==1)
+                       return;
+                   --this.activeNumber;
+                },
+                next:function () {
+                    if(this.activeNumber==this.pageCount)
+                        return;
+                    ++this.activeNumber;
+                },
+                activeThis:function (index) {
+                    this.activeNumber=index;
+                },
+                first:function () {
+                    this.activeNumber=1;
+                },
+                last:function () {
+                    this.activeNumber=this.pageCount;
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>

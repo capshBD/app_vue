@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script src="../../../static/vue/common/vue.js"></script>
+    <!--从classpath下的static下级目录开始找,包含"/"-->
+    <script src="/vue/common/vue.js"></script>
+    <!--
+        v-if= 后面的绑定的vue的数据对象 可以是 boolean,number,null,undefined,字符串,NaN;
+        还可以对这个vue的数据对象进行大小比较,执行函数操作比较等
+    -->
 </head>
+
 <body>
     <div id="app">
         <input type="button" value="显示" @click="show">

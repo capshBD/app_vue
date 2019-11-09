@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义指令</title>
+    <script src="/vue/common/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <button @click="add">按钮+</button>
+    <button @click="sub">按钮-</button>
+    <p v-myshow="numCount">自己定义的控制显示还是隐藏</p>
+</div>
+
+<script type="text/javascript">
+  new Vue({
+      el:'#app',
+      data:{
+          numCount:0
+      },
+      methods:{
+          add:function () {
+              this.numCount++;
+          },
+          sub:function () {
+              this.numCount--;
+          }
+      },
+
+      directives:{//自定义执行必须配置的属性
+          myshow:{//绑定自定义的myshow指令执行行为
+              bind: function(el, bindings){ //el指的是原始html文档元素对象  bindings指的是一个对象 存的是表达式的名称和值等
+                  console.log('绑定.....');
+                  console.log(el, bindings);
+              },
+              update: function(el, bindings){//只要numCount表达式的值一更新
+                  console.log('更新.....');
+                  console.log(el, bindings);
+                  if(bindings.value > 0){
+                      el.setAttribute('style', 'display: block');
+                  }else{
+                      el.setAttribute('style', 'display: none');
+                  }
+              },
+              unbind: function(el, bindings){
+
+              }
+          }
+      }
+
+  })
+
+</script>
+</body>
+</html>

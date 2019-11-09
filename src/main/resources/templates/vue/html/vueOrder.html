@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 指令</title>
+    <script src="/vue/common/vue.js"></script>
+</head>
+<!--
+v-show 控制元素的显示与隐藏 元素还在
+v-if 也是控制元素的显示与隐藏 元素不在了
+v-model value值绑定
+v-for 遍历:
+1.普通数组 v-for="变量名 in vue对象数据的数组属性名" {{变量名}}
+2.数组带下标 v-for="(变量名,下标) in vue对象数据的数组属性名" {{变量名}},{{下标}}
+3.json遍历
+v-for="(变量名,[key],[index]) in vue对象数据的json属性名"
+
+-->
+<body>
+  <div id="appOrder">
+      <button @click="ctrlEleShow">切换显示隐藏</button><br>
+      <p v-show="isShow">show指令控制显示隐藏</p>
+      <button @click="ctrlTextValue">改变下面文本框的值</button><br>
+      <input v-model="theTextValue" @change="showTextValue" type="text"> <!--通过vue设置的值不触发change事件 值改变后 vue对象里的数据也相应改变-->
+    <ul>
+        <li style="color: chocolate">遍历数组</li>
+        <li v-for="val in array">{{val}}</li> <!--遍历li 在li标签上加-->
+    </ul>
+
+      <ul>
+          <li style="color: chocolate">遍历数组带下标</li>
+          <li v-for="(val,index) in array">值:{{val}},下标{{index}}</li> <!--遍历li 在li标签上加-->
+      </ul>
+
+      <ul>
+          <li style="color: chocolate">遍历json带key和下标</li>
+          <li v-for="(val,key,index) in json">值:{{val}},键:{{key}},下标{{index}}</li> <!--遍历li 在li标签上加-->
+      </ul>
+  </div>
+
+</body>
+  <script type="text/javascript">
+    var vue=new Vue({
+        data:{
+            isShow:false,
+            theTextValue:'text文本',
+            array:['beijing','shanghai','chongqing','jinan'],
+            json:{
+                fruit:'apple',
+                phone:'shanxin',
+                age:22
+            }
+        },
+        el:'#appOrder',
+        methods:{
+            ctrlEleShow: function(){
+                this.isShow=!this.isShow;
+            },
+            ctrlTextValue:function () {
+                this.theTextValue=Math.random()*100;
+            },
+            showTextValue:function () {
+                console.info(this.theTextValue);
+            }
+        }
+    })
+
+  </script>
+</html>
