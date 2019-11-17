@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 组件</title>
+    <script src="/vue/common/vue.js"></script>
+    <script type="text/javascript">
+        window.onload=function () {
+        /*1. 创建组件
+         组件的命名不是小驼峰的，用"-"串联的小写字母单词
+            template中的标记必须再一个根标记下面，不可以多个并列 */
+            //创建一个Vue的自定义组件 必须在new Vue之前创建
+            Vue.component('my-component',{//生成的对象是VueComponent的一个实例 VueComponent继承Vue
+                //模板html元素内容
+                template:`
+                    <div>
+                        <div>
+                            <p>第一个标签元素</p>
+                        </div>
+                        <div>
+                            <p>第二个标签元素</p>
+                        </div>
+                        <div>
+                        <form>
+                            <input type="text" value="第一个表单字段元素"/>
+                        </form>
+
+                        </div>
+
+                     </div>
+
+                `
+
+
+            });
+
+            Vue.component("child-1",{
+                    data:function(){ //组件里面的data必须是函数
+                        return {word:'第一个孩子'}
+                    },
+                template:`
+                    <div>
+                    <p>{{word}}</p>
+</div>
+                `
+            });
+
+            Vue.component("child-second",{
+                data:function(){
+                    return {arry:['one','vue学习','extjs学习']}
+                },
+                template:`
+                    <div>
+                    <p>第2个孩子</p>
+                    <ul>
+                    <li v-for="val in arry">{{val}}</li>
+</ul>
+</div>
+                `
+            });
+
+            Vue.component('parent',{
+                template:`
+                    <div>
+                    <child-1></child-1>
+                    <child-second/>
+</div>
+                `
+            })
+            new Vue({
+                el:'#app'
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="app">
+        <!--vue发现一个自定义标签元素 会去Vue通过component方法添加的组件中取查找 将他挂载到dom树上-->
+        <my-component></my-component>
+        <parent></parent>
+    </div>
+
+</body>
+</html>

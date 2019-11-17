@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父子组件发送消息</title>
+    <script src="/vue/common/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <parent></parent>
+    </div>
+    <script>
+        // 子组件
+        Vue.component('child', {
+            template: `
+                <div>
+                    <input type="button" @click="sendData" value="点我发送信息">
+                </div>
+            `,
+            methods: {
+                sendData: function(){ //子组件调用this.$emit(父组件自定义传进来的事件名,参数); 会调用父组件的相应方法,方法的this指向父组件
+                    this.$emit('myEvent', 'Hello World! I am Vue!');
+                }
+            }
+        });
+
+        // 父组件 把父组件的监听函数传给子组件 写法 @自定义事件名="父组件的某个函数"
+        Vue.component('parent',{
+            template: `
+                <div>
+                    <child @myEvent="getData"></child>
+                    <hr />
+                    <h4>现在的msg：{{msg}}</h4>
+                </div>
+            `,
+            methods: {
+                getData: function(msg){
+                    console.log('收到了来自子组件的信息：' + msg);
+                    this.msg = msg;
+                }
+            },
+            data: function(){
+                return {
+                    msg: ''
+                };
+            }
+        });
+
+        new Vue({el:'#app'});
+    </script>
+</body>
+</html>

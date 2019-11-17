@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/vue/common/vue.js"></script>
+
+    <style>
+        div.bindColor{
+            width:300px;
+            height:200px;
+            background-color: pink;
+        }
+
+        .bindBorder{
+            border:3px solid black;
+        }
+    </style>
+</head>
+
+<style>
+
+
+</style>
+<!--v-bind控制标签属性
+    控制class的时候 :class="" 后面的属性可以是一个vue对象的 字符串 数组 json对象
+-->
+<body>
+<div id="bind">
+   <!-- <img v-bind:src="imgUrl"/>-->
+    <img :src="imgUrl"><br>
+    <input type="button" value="改变边框" @click="changeBorder">
+    <div :class="{bindColor:bindColor,bindBorder:bindBorder}">对象定义绑定</div><!--先把需要应用的类样式名定义在这里,再通过控制vue对象的相关属性值来控制哪些样式正真被应用-->
+    <input type="button" value="添加边框" @click="addBorder">
+    <input type="button" value="改变内联样式" @click="changeStyle">
+    <div :class="clsStrArray" :style="{fontSize:bindFont}">小字体</div> <!--应用数组中定义的伪类选择器 如这个就是应用样式表定义的bindColor样式-->
+
+</div>
+
+
+</body>
+
+<script>
+    var data={
+        imgUrl:'/vue/common/img/2.JPG',
+        clsStrArray:['bindColor'],
+        bindColor:true,
+        bindBorder:false,
+        bindFont:'12px'
+    };
+    var vue=new Vue({
+        el:'#bind',
+        data:data,
+        methods:{
+            addBorder:function () {
+                if(this.clsStrArray.indexOf('bindBorder')<1)
+                   this.clsStrArray.push('bindBorder')  ;
+            },
+            changeBorder:function () {
+                this.bindBorder=!this.bindBorder;
+            },
+            changeStyle:function(){
+               this.bindFont='40px'
+            }
+        }
+    })
+</script>
+</html>

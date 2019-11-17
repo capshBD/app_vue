@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue 属性值过滤</title>
+    <script src="/vue/common/vue.js"></script>
+    <style> <!--这个样式保证页面的一些vue特定替换标记 在vue没有完成对其渲染之前不会被用户看见,直接写在vue挂载点之后-->
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <script type="text/javascript">
+    window.onload=function(){
+        new Vue({
+            el:"#app",
+            data:{
+                price:5671.2,
+                word:'Vue Filters 学习'
+            },
+            filters:{
+                //替换页面{{}}标记的属性的时候 若遇到|过滤标记 会调用声明的此方法 传入原始值和方法的参数
+                changeStyle:function (originalValue,arg) {
+                    return arg+" "+Number(originalValue)/8;
+                },
+                changeCase:function (originalValue,arg) {
+                    return arg?originalValue.toUpperCase():originalValue.toLowerCase();
+                }
+            }
+        })
+    }
+    </script>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <p>{{price|changeStyle("$")}}</p>
+        <p>{{word|changeCase(true)}}</p>
+        <p>{{word|changeCase(false)}}</p>
+    </div>
+
+</body>
+</html>

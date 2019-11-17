@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue 组件输入框缺省值</title>
+    <script src="/vue/common/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <my-login></my-login>
+        <br/>
+        <my-input placeHolder="随便写了一个input"></my-input>
+    </div>
+    <script>
+        Vue.component('my-input', {
+            template: `
+                <input type="text" :placeholder="placeHolderTips" />
+            `,
+            props: ['placeHolderTips'],
+            mounted: function(){
+                console.log(this.placeHolderTips);//外部直接写my-input,这个值是undefined
+            }
+        });
+
+        Vue.component('my-login', {
+            template: `
+                <div>
+                    用户名： <my-input placeHolderTips="输入用户名"></my-input>
+                    <br/>
+                    密码：<my-input placeHolderTips="输入密码"></my-input>
+                </div>
+            `
+        });
+
+         new Vue({el: '#app'});
+    </script>
+</body>
+</html>

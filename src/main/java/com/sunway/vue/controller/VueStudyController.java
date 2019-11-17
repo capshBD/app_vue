@@ -31,6 +31,11 @@ public class VueStudyController {
         return "vue/html/vueOrder";
     }
 
+    @GetMapping("/v-bind")//v-bind绑定元素属性
+    public String vueBindOrderPage(){
+        return "vue/html/vueBindOrder";
+    }
+
     @GetMapping("/example")//留言板例子
     public String testExample(){
         return "vue/html/example";
@@ -59,5 +64,50 @@ public class VueStudyController {
     @GetMapping("/computed")//动态设置属性
     public String testComputed(){
         return "vue/html/vueDymicAttr";
+    }
+
+    @GetMapping("/filter")//属性值过滤
+    public String testFilter(){
+        return "vue/html/vueFilters";
+    }
+
+    @GetMapping("/comp")//组件
+    public String testComp(){
+        return "vue/html/vueComponent";
+    }
+
+    @GetMapping("/example-comp")//留言板组件
+    public String testExampleComp(){
+        return "vue/html/vueExampleComp";
+    }
+
+    @GetMapping("/comp-life")//组件
+    public String testCompLife(){
+        return "vue/html/vueCompLife";
+    }
+
+    @GetMapping("/comp-data-interactive")//父子组件数据交互
+    public String testInteractive(){
+        return "vue/html/vueCompDataInteractive";
+    }
+
+    @GetMapping("/comp-data-interactive-example")//父子组件数据交互参数组件
+    public String testInteractiveExample(){
+        return "vue/html/vueCompDataInteractiveExample";
+    }
+
+    @GetMapping("/comp-place-holder")//组件参数默认提示值
+    public String testComPlaceHolder(){
+        return "vue/html/vueComPlaceholder";
+    }
+
+    @GetMapping("/comp-place-swaper")//父子组件共享数据
+    public String testCompSwaper(){
+        return "vue/html/vueCompSwaper";
+    }
+
+    @GetMapping("/comp-msg")//父子组件调用监听函数
+    public String testCompMsg(){
+        return "vue/html/vueCompMsg";
     }
 }

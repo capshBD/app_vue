@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>thymeleaf模板测试</title>
+</head>
+<body>
+<div>
+  <p><span th:text="${information}"/></p>
+
+    <div th:object="${session.vue}">
+        Name: <span th: text=" ${vueName}" />Sebastian.
+        Surname: <span th: text=" ${vueStrange}" />Pepper.
+        Nationality: <span th: text=" ${vueSeful}" />Saturn.
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父子组件数据影响</title>
+    <script src="/vue/common/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <parent></parent>
+    </div>
+    <script>
+        // 1. 父组件向子组件传递数据，初始化时？可以
+        // 2. 父组件在运行时更新传递给子组件的数据，是否可行？可以
+        // 3. 子组件就不能把数据回写给父组件么？可以，直接不可以，要传递对象 ,且保证只修改对象里的数据，而不修改对象本身。
+
+        // 子组件
+        Vue.component('child', {
+            template: `
+                <div>
+                    <h4>来自父亲的Value{{myValue}}</h4>
+                    <input type="text" v-model="myValue" />
+                </div>
+            `,
+            props: ['myValue'],
+            methods: {
+
+            },
+            mounted: function(){
+                console.log('子组件的mount：' + this.myValue);
+            },
+            updated: function(){
+                console.log('子组件的update：' + this.myValue);
+            }
+        });
+
+        Vue.component('child2', {
+            template: `
+                <div>
+                    <h4>来自父亲的Value{{myValue.d}}</h4>
+                    <input type="text" v-model="myValue.d" />
+                </div>
+            `,
+            props: ['myValue'],
+            methods: {
+
+            },
+            mounted: function(){
+                console.log('子组件的mount：' + this.myValue.d);
+            },
+            updated: function(){
+                console.log('子组件的update：' + this.myValue.d);
+            }
+        });
+
+        // 父组件 ,直接的值传递给子组件后 若父组件更新这个值 则子组件一同更新此值 并调用父子组件的update方法,若子组件更新这个值,不会将此值同步更新到父组件,所以父组件调用update方法会报错; 但作为一个对象传递给子组件后,则父子组件都可以同步更新这个对象里面的值
+
+        Vue.component('parent', {
+            template: `
+                <div>
+                    <h4>父亲的Value{{parentValue}}</h4>
+                    <h4>父亲的Value2{{parentValue2.d}}</h4>
+                    <input type="text" v-model="parentValue" />
+                      <input type="text" v-model="parentValue2.d" />
+                    <hr/>
+
+                    <child :myValue="parentValue"></child>
+                      <hr/>
+                    <child2 :myValue="parentValue2"></child2>
+                </div>
+            `,
+            data: function(){
+                return {
+                    parentValue: '隔壁王校长直接欢迎你！',
+                    parentValue2: {
+                        d: '隔壁王校长欢迎你！'
+                    }
+                }
+            },
+            updated: function(){
+                console.log('父组件的update：' + this.parentValue2.d);
+            }
+
+        });
+
+        new Vue({el: '#app'});
+    </script>
+</body>
+</html>

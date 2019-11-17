@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件生命周期</title>
+    <script src="/vue/common/vue.js"></script>
+    <script type="text/javascript">
+        window.onload=function () {
+            Vue.component('life-comp',{
+                data:function(){
+                    return {
+                        cmpCountNum:0,
+                        textValue1:12,
+                        textValue2:'值2'
+                    }
+                },
+                template:`
+                    <div>
+                    <button @click="addNum">vue组件数字增加</button>
+                    <p>{{cmpCountNum}}</p>
+                    <input type="text" v-model="textValue1"/>
+                    <input type="text" v-model="textValue2"/>
+                    <p>{{textValue1}}</p>
+                    <p>{{textValue2}}</p>
+                    </div>
+                `,
+                methods:{
+                    addNum:function () {
+                        console.info(this);
+                        ++this.cmpCountNum;
+                    }
+                },
+
+                watch:{//监听组件对象的属性被改变事件
+                    textValue1:function () {
+                        console.info("value1 changed:"+this.textValue1);
+                    },
+                    textValue2:function () {
+                        console.info("value2 changed:"+this.textValue2);
+                    }
+                },
+               /* beforeCreate:function () {
+                    console.info('组件创建之前...')
+                },
+                created:function () {
+                    console.info('组件创建了...')
+                },*/
+              /*  beforeMount: function(){
+                    console.log('组件被挂载之前...');
+                },
+                mounted: function(){
+                    console.log('组件被挂载了...');
+                },*/
+                beforeUpdate: function(){
+                    console.log('组件元素被更新之前...');
+                },
+                updated: function(){
+                    console.log('组件元素被更新了...');
+                },
+                beforeDestroy: function(){
+                    console.log('组件被销毁之前...');
+                },
+                destroyed: function(){
+                    console.log('组件被销毁了...');
+                }
+            });
+
+            new Vue({
+                el:'#app',
+                data:{
+                    isShow:true,
+                },
+                methods:{
+                    toggleShow:function () {
+                        this.isShow=!this.isShow;
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <div id="app">
+        <p><button @click="toggleShow">切换组件的显示隐藏</button></p>
+        <life-comp v-if="isShow"/> <!--被销毁再显示时,会重新创建一个组件对象 调用生命周期方法-->
+    </div>
+</body>
+</html>
