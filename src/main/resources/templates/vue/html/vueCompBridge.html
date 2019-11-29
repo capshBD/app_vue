@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>兄弟组件通信桥接</title>
+    <script src="/vue/common/vue.js"></script>
+</head>
+<body>
+<body>
+<div id="app">
+    <child-1></child-1>
+    <child-2></child-2>
+</div>
+<script>
+    // 1. 创建公共的Vue对象
+    var bridge = new Vue();
+    // 2. 创建两个子组件
+    Vue.component('child-1',{
+        template: `
+                <div>
+                    <h4>msg: {{msg}}</h4>
+                    <input type="button" value="1->2" @click="sendData" />
+                </div>
+            `,
+        data: function(){
+            return {
+                msg: ''
+            }
+        },
+        methods: {
+            sendData: function(){
+                //调用桥接器的监听函数 这个函数会调用对应OneToTwoEvent注册的函数 从而对其他组件产生影响
+                bridge.$emit('OneToTwoEvent', 'Hello 2, I am 1');
+            }
+        },
+        mounted: function(){
+            var that = this;
+            //桥接对象注册一个从其他组件调用监听方法改变本组件属性的监听函数
+            bridge.$on('TwoToOneEvent', function(msg){
+                console.log('收到来自2的：' + msg);
+                that.msg = msg;
+            })
+        }
+    });
+
+    Vue.component('child-2',{
+        template: `
+                <div>
+                    <h4>msg: {{msg}}</h4>
+                    <input type="button" value="2->1" @click="sendData" />
+                </div>
+            `,
+        data: function(){
+            return {
+                msg: ''
+            }
+        },
+        methods: {
+            sendData: function(){
+                bridge.$emit('TwoToOneEvent', 'Hello 1, I am 2');
+            }
+        },
+        mounted: function(){
+            // 1. mounted被调用时，只是定义了回调函数，但是并没有运行
+            // 2. 当child-1来触发事件时，引擎来调用回到函数，此时初始化回调函数中的this指向
+            //    注意：此时this并不只想child-2对象，所以，this.msg找不到的
+            // 3. 用闭包。
+            var that = this;
+            bridge.$on('OneToTwoEvent', function(msg){
+                console.log('收到来自1的：' + msg);
+                that.msg = msg;
+            })
+        }
+
+    });
+
+    new Vue({el:'#app'});
+</script>
+</body>
+</body>
+</html>

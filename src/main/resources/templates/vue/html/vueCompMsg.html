@@ -13,16 +13,31 @@
         <parent></parent>
     </div>
     <script>
-        // 子组件
+       /*
+        练习（共享参数对象数据），父组件中有两个变量，一个数组，一个是开关
+        子组件，可以控制开关，同时也可以向父组件的数组中添加一个数字
+        方式1 父组件把监听函数传给子组件
+        方式2 父组件把共享参数传给子组件(必须是对象类型)
+        方式3 利用父子组件的$parent与$refs引用关系
+         */
+        //子组件
         Vue.component('child', {
             template: `
                 <div>
                     <input type="button" @click="sendData" value="点我发送信息">
+                    <input type="button" @click="switchData" value="点我转换状态">
+                    <input type="button" @click="addData" value="点我添加数据">
                 </div>
             `,
             methods: {
                 sendData: function(){ //子组件调用this.$emit(父组件自定义传进来的事件名,参数); 会调用父组件的相应方法,方法的this指向父组件
                     this.$emit('myEvent', 'Hello World! I am Vue!');
+                },
+                switchData:function () {
+                    this.$emit('hideOrShow');
+                },
+                addData:function () {
+                    this.$emit('addValue',Math.ceil(Math.random()*100));
                 }
             }
         });
@@ -31,7 +46,11 @@
         Vue.component('parent',{
             template: `
                 <div>
-                    <child @myEvent="getData"></child>
+                    <div v-show="isShow">是否显示此div</div>
+                    <ul>
+                    <li v-for="val  in arry">{{val}}</li>
+</ul>
+                    <child @myEvent="getData" @hideOrShow="switchStatus" @addValue="pushData"></child>
                     <hr />
                     <h4>现在的msg：{{msg}}</h4>
                 </div>
@@ -40,11 +59,19 @@
                 getData: function(msg){
                     console.log('收到了来自子组件的信息：' + msg);
                     this.msg = msg;
+                },
+                switchStatus:function () {
+                    this.isShow=!this.isShow;
+                },
+                pushData:function (num) {
+                    this.arry.push(num);
                 }
             },
             data: function(){
                 return {
-                    msg: ''
+                    msg: '',
+                    isShow:true,
+                    arry:[5,10,15,25]
                 };
             }
         });

@@ -110,4 +110,19 @@ public class VueStudyController {
     public String testCompMsg(){
         return "vue/html/vueCompMsg";
     }
+
+    @GetMapping("/comp-ref")//父子组件变量引用
+    public String testCompRef(){
+        return "vue/html/vueCompRef";
+    }
+
+    @GetMapping("/comp-bridge")//兄弟组件桥接
+    public String testCompBridge(){
+        return "vue/html/vueCompBridge";
+    }
+
+    @GetMapping("/comp-ref-example")//父子引用例子
+    public String testRefExample(){
+        return "vue/html/vueRefExample";
+    }
 }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue父子组件变量引用</title>
+    <script src="/vue/common/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <parent></parent>
+    </div>
+    <script>
+        // 子组件
+        Vue.component('child', {
+            template: `
+            <div>
+             <input type="button"  @click="changeP" value="改变父组件"/>
+              <div>子组件</div>
+            </div>
+            `,
+            data: function(){
+                return {
+                    childStr: 'I am your son!'
+                };
+            },
+            mounted: function(){
+                //通过this.$parent直接能够获取父组件的一切变量,并且可以直接改变父组件的内容
+                console.log('子组件的mount：' + this.$parent.parentStr);
+            },
+            methods: {
+                changeP:function () {
+                    this.$parent.parentStr="子组件改变乱我";
+                }
+            }
+
+        });
+
+        // 父组件 ref申明一个子组件的引用变量myson
+        Vue.component('parent', {
+            template: `
+                <div>
+                    <child ref="mySon"></child>
+                    <input type="button" value="获得子组件信息" @click="getData">
+                    <p>父组件的内容:{{parentStr}}</p>
+                </div>
+            `,
+            data: function(){
+                return {
+                    parentStr: 'I am your father!'
+                }
+            },
+            methods: {
+                getData: function(){
+                    console.log('获得子组件信息：' + this.$refs.mySon.childStr);
+                }
+            }
+
+        });
+
+       new Vue({el: '#app'});
+    </script>
+</body>
+</html>
