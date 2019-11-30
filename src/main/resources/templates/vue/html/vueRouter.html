@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue路由</title>
+    <script src="/vue/common/vue.js"></script>
+    <script src="/vue/common/vue-router.js"></script>
+    <style>
+        .base {
+            width: 320px;
+            height: 400px;
+            background-color: #ddd;
+            border: 3px solid #1b6583;
+            padding: 15px;
+            text-align: center;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload=function () {
+            //2.登陆的页面
+            var login=Vue.component('login',{
+                template: `
+                <div class="base">
+                    <h4>登陆的页面</h4>
+                    <input type="button" value="去reg by button" @click="gotoReg" />
+                    <router-link to="/reg">去reg</router-link> </br>
+                    <input type="text" v-model="userName" />
+                    <router-link :to="'/main/' + userName">去Main</router-link>
+                </div>
+               `,
+                data: function(){
+                    return {
+                        userName: ''
+                    };
+                },
+                methods: {
+                    gotoReg: function(){
+                        //this.$router指的是外面的myRouter对象,可以通过myRouter对象的push()方法或者<router-link >超链接方式,转到另一个路由组件
+                        this.$router.push('/reg');
+                    }
+                }
+            });
+            // 3. 注册页面
+            var reg = Vue.component('reg', {
+                template: `
+                <div class="base">
+                    <h4>注册的页面</h4>
+                    <router-link to="/login">回login</router-link>
+                </div>
+            `
+            });
+
+
+            // 参数接收方
+            /*
+             给组件加子路由,在组件里面在写一个 <router-view></router-view>
+             所有的需要动态跳转的组件写上 <router-link> 和<router-view>平级
+             */
+            var my_main = Vue.component('my_main', {
+                template: `
+                <div class="base">
+                    <h1>用户名：{{userName}}</h1>
+                     <router-link to="/login">回login</router-link><br>
+                     <router-link to="/sub1">sub1</router-link>
+                     <router-link to="/sub2">sub2</router-link>
+                     <router-view></router-view>
+                </div>
+            `,
+                data: function(){
+                    return {
+                        userName: 'default'
+                    };
+                },
+                methods: {
+
+                },
+                mounted: function(){
+                    console.log(this.$route.params);//路由的所有参数
+                    this.userName = this.$route.params.userName||this.userName ;
+                }
+
+            });
+
+            var mySub1 = Vue.component('my-main-1', {
+                template: `
+                <div class="base">
+                    <h1>附页 - 1</h1>
+                  <router-link to="/sub2">ssub2</router-link>
+
+                </div>
+            `
+            });
+
+            var mySub2 = Vue.component('my-main-2', {
+                template: `
+                <div class="base">
+                    <h1>附页 - 2</h1>
+                    <router-link to="/sub1">ssub1</router-link>
+                </div>
+            `
+            });
+
+            var notFound = Vue.component('not-found', {
+                template: `
+                <div class="base">
+                    <h4> 404 page Not Found </h4>
+                    <router-link to="/register">返回注册页</router-link>
+                    <router-link to="/youlogin">返回登录页</router-link>
+                </div>
+            `
+            });
+
+            // 4. 配置路由词典
+            // {path:<Vue的路径，#号后面的, component: <组件实例>}
+            //根据请求此页面路径后面加上的#/参数确定显示页面的哪个组件
+            const myRoutes = [
+                {path: '', component: login},
+                {path: '/login', component: login},
+                {path: '/youlogin', redirect: '/login'},//重定向,跳转到真正的路由上,不会多路由
+                {path: '/reg', component: reg,alias: '/register'},//配置路由别名,相当于多了一个路由指向这个组件
+                {path: '/main/:userName', component: my_main,         //可以接收参数
+                    children: [                                      //配置子路由
+                        {path: '/sub1', component: mySub1},
+                        {path: '/sub2', component: mySub2},
+                    ]},
+                {path: '*', component: notFound}//路由找不到的处理页面
+            ];
+
+            //配置这个页面的跳转路由
+            const myRouter = new VueRouter({
+                routes: myRoutes
+            });
+
+            new Vue({
+                el: '#app',
+                router: myRouter  //设置页面的路由实例
+            });
+        }
+    </script>
+</head>
+<body>
+<div id="app">
+    <!-- 2.在HTML中调用router组件。  给你提供的组件，不可改 -->
+    <router-view></router-view>
+</div>
+</body>
+</html>
